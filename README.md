@@ -110,6 +110,7 @@ resource "kubernetes_deployment" "launch_wordpress" {
         container {
           image = "wordpress:php7.2"           <b># docker container name of wordpress image</b>
           name  = "wordpress"
+          <b># these are wordpress container image enviromental variables which are required</b>
           env  {
               name  = "WORDPRESS_DB_HOST"                    <b># wordpress database host name or url </b>
               value = "${aws_db_instance.default.endpoint}:3306"
@@ -146,11 +147,11 @@ resource "kubernetes_service" "wordpress-port" {
     }
     port {
       name        = "http"
-      port        = 3000
+      port        = 3000          <b># we can access wordpress through port no 3000 of minikube ip </b>
       protocol    = "TCP"
-      target_port = 80
+      target_port = 80            <b># wordpress port no to be exposed to public</b>
     }   
-    type = "LoadBalancer"
+    type = "LoadBalancer"          <b># service type</b>
   }
 }
 </pre>
